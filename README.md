@@ -4,7 +4,7 @@
   <img src="logo/npmthreatem.png" alt="NPM Threat Emulation" width="400">
 </div>
 
-[![Hunt Smarter - Hunt Harder](https://camo.githubusercontent.com/2893aea77575eefbedb5ac982227a13e6881d46430d1f184b0d7547dfce5801c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f48756e745f536d61727465722d48756e745f4861726465722d637269746963616c)](https://github.com/your-repo)
+[![Hunt Smarter - Hunt Harder](https://camo.githubusercontent.com/2893aea77575eefbedb5ac982227a13e6881d46430d1f184b0d7547dfce5801c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f48756e745f536d61727465722d48756e745f4861726465722d637269746963616c)](https://github.com/MHaggis/NPM-Threat-Emulation)
 
 
 ### What is this?
@@ -25,10 +25,11 @@ sudo apt-get update && sudo apt-get install -y nodejs npm python3 curl netcat
 ```
 
 ### Quick start
-1) Change directory
+1) Clone and enter the repo
 
 ```bash
-cd /Users/michhaag/Documents/GitHub/NPM-Threat-Emulation
+git clone https://github.com/MHaggis/NPM-Threat-Emulation.git
+cd NPM-Threat-Emulation
 ```
 
 2) Initialize the test environment
@@ -94,6 +95,29 @@ curl -s -o /dev/null -w "%{http_code}\n" -X POST "$MOCK_WEBHOOK" -d test=1
 - 6 Worm Propagation: simulates `npm publish --dry-run` across 5 packages using `NPM_TOKEN` from the fake token.
 - 7 Cloud Metadata Probe: probes AWS/GCP/Azure metadata endpoints with short timeouts.
 - 8 Repo Weaponization: creates a repo and commits a `data.json` that includes fake tokens and env details.
+
+#### Visual overview
+
+```mermaid
+flowchart TD
+    A[Setup env] --> B{Webhook}
+    B -->|Local| C[Local mock server]
+    B -->|Live| D[External webhook]
+    A --> S1[Scenario 1: postinstall exfil]
+    A --> S2[Scenario 2: trufflehog scan]
+    A --> S3[Scenario 3: workflow injection]
+    A --> S4[Scenario 4: package patching]
+    A --> S5[Scenario 5: multi-stage download]
+    A --> S6[Scenario 6: worm dry-run]
+    A --> S7[Scenario 7: cloud metadata]
+    A --> S8[Scenario 8: repo weaponization]
+    S1 --> E[POST events]
+    S4 --> E
+    S5 --> E
+    S3 --> E
+    E --> C
+    E --> D
+```
 
 ### Details and tips
 - `setup_test_env.sh` exports `FAKE_*` tokens and will start `mock_server.py` unless you configured a live `MOCK_WEBHOOK`.
