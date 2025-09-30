@@ -47,25 +47,31 @@ curl -s -o /dev/null -w "%{http_code}\n" -X POST "$MOCK_WEBHOOK" -d test=1
 # expected: 200
 ```
 
-4) Run a single scenario (1–8)
+4) Run a single scenario (1–9)
 
 ```bash
 ./scenarios/scenario_1.sh
 ```
 
-5) Or run all scenarios (60s pause between each)
+5) Or run all scenarios (60s pause between each, 1-9)
 
 ```bash
 ./run_npm_emulation_tests.sh
 ```
 
-6) Reset between test runs (cleans temp, npm cache, and stops local server)
+6) Stop the mock server only (optional)
+
+```bash
+./stop_server.sh
+```
+
+7) Reset between test runs (cleans temp, npm cache, and stops local server)
 
 ```bash
 ./reset_between_tests.sh
 ```
 
-7) Cleanup everything (remove artifacts, caches, and stop server)
+8) Cleanup everything (remove artifacts, caches, and stop server)
 
 ```bash
 ./cleanup_test_env.sh
@@ -88,13 +94,14 @@ curl -s -o /dev/null -w "%{http_code}\n" -X POST "$MOCK_WEBHOOK" -d test=1
 
 ### Scenarios at a glance
 - 1 Malicious Postinstall: triggers `postinstall` that POSTs to `MOCK_WEBHOOK`. Also tries curl/wget/yarn variations.
-- 2 TruffleHog Scan: installs TruffleHog via Go if available; scans fake secrets while `npm install` runs.
+- 2 TruffleHog Scan: downloads real TruffleHog binary from GitHub releases (mimics Shai-Hulud); scans fake secrets and posts structured payload with base64-encoded results.
 - 3 Workflow Injection: drops `.github/workflows/shai-hulud-workflow.yml` during an npm run; workflow posts to `MOCK_WEBHOOK`.
 - 4 Package Patching: appends a small payload into `node_modules/left-pad/index.js` during install and attempts a POST to the local server.
 - 5 Multi‑Stage Download: downloads stage1 and stage2 to `/tmp`, then deletes them. Uses external `MOCK_WEBHOOK` when set; otherwise local mock server endpoints.
 - 6 Worm Propagation: simulates `npm publish --dry-run` across 5 packages using `NPM_TOKEN` from the fake token.
 - 7 Cloud Metadata Probe: probes AWS/GCP/Azure metadata endpoints with short timeouts.
 - 8 Repo Weaponization: creates a repo and commits a `data.json` that includes fake tokens and env details.
+- 9 Bundle Worm Chain: repacks a tarball with `bundle.js` and spawns `/tmp/processor.sh` plus `/tmp/migrate-repos.sh` for defenders to track.
 
 #### Visual overview
 

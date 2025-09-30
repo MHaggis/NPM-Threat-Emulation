@@ -1,0 +1,26 @@
+{
+  "name": "npm-threat-emulation-root",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "ethers": "^6.15.0",
+    "test-package": "^0.0.1"
+  },
+  "description": "<div align=\"center\">   <img src=\"logo/npmthreatem.png\" alt=\"NPM Threat Emulation\" width=\"400\"> </div>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MHaggis/NPM-Threat-Emulation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MHaggis/NPM-Threat-Emulation/issues"
+  },
+  "homepage": "https://github.com/MHaggis/NPM-Threat-Emulation#readme"
+}

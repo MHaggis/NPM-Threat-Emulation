@@ -1,0 +1,11 @@
+/node_modules
+/venv
+/bundle-repack-test
+/tmp/*.sh
+/tmp/*.log
+/tmp/bundle_repack_summary.txt
+/tmp/shai_hulud_trufflehog_post.log
+/tmp/trufflehog_results.json
+/tmp/trufflehog_release.tar.gz
+/tmp/shai-hulud-secrets.json
+.DS_Store

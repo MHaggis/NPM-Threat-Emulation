@@ -6,7 +6,7 @@ echo "================================================"
 
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/setup_test_env.sh"
 
-for scenario in {1..8}; do
+for scenario in {1..9}; do
   echo "Running Scenario $scenario..."
   "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/scenarios/scenario_${scenario}.sh"
   sleep 60

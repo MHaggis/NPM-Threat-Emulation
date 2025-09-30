@@ -9,7 +9,7 @@ npm init -y >/dev/null 2>&1 || true
 npm install ethers >/dev/null 2>&1 || true
 
 # Start a harmless install in the background to simulate activity
-npm install --no-save left-pad@1.3.0 &
+timeout 30 npm install --no-save left-pad@1.3.0 >/dev/null 2>&1 &
 NPM_PID=$!
 
 # Target a guaranteed file to patch once present
@@ -38,6 +38,11 @@ __maliciousPayload__();
 EOF
 fi
 
-wait "$NPM_PID" || true
+# Clean up background npm process if still running
+if ps -p "$NPM_PID" >/dev/null 2>&1; then
+  kill "$NPM_PID" 2>/dev/null || true
+fi
+wait "$NPM_PID" 2>/dev/null || true
+
 echo "Scenario 4 complete"
 
