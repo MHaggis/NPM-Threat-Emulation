@@ -10,8 +10,19 @@
 ### What is this?
 - A lightweight set of scripts that simulate common NPM supply‑chain attack behaviors in a controlled way. Useful for testing detections, pipelines, and endpoint logging without risking real secrets.
 - Uses fake tokens, a local POST‑aware mock server by default, and safe no‑op requests.
+- **Now available for both Linux/macOS (bash) and Windows (PowerShell)!**
 
-### Requirements
+### Choose Your Platform
+
+**🪟 Windows Users:** Check out the [**Windows PowerShell version →**](windows/README.md)
+- Native PowerShell scripts
+- Built-in HTTP server (no Python needed!)
+- Auto-installs dependencies (Node.js, npm, git)
+- One-command setup
+
+**🐧 Linux/macOS Users:** Continue below for bash version
+
+### Requirements (Linux/macOS)
 - macOS or Linux with bash/zsh
 - Node.js and npm
 - Python 3 (for the local mock server)
@@ -24,7 +35,10 @@ OS prerequisites (Ubuntu/Debian)
 sudo apt-get update && sudo apt-get install -y nodejs npm python3 curl netcat
 ```
 
-### Quick start
+### Quick start (Linux/macOS)
+
+**For Windows users, see the [Windows guide →](windows/README.md)**
+
 1) Clone and enter the repo
 
 ```bash
@@ -92,16 +106,18 @@ curl -s -o /dev/null -w "%{http_code}\n" -X POST "$MOCK_WEBHOOK" -d test=1
     ```
 - Payloads received by the local server are saved under `tmp/payload_*.bin` for verification.
 
-### Scenarios at a glance
-- 1 Malicious Postinstall: triggers `postinstall` that POSTs to `MOCK_WEBHOOK`. Also tries curl/wget/yarn variations.
-- 2 TruffleHog Scan: downloads real TruffleHog binary from GitHub releases (mimics Shai-Hulud); scans fake secrets and posts structured payload with base64-encoded results.
-- 3 Workflow Injection: drops `.github/workflows/shai-hulud-workflow.yml` during an npm run; workflow posts to `MOCK_WEBHOOK`.
-- 4 Package Patching: appends a small payload into `node_modules/left-pad/index.js` during install and attempts a POST to the local server.
-- 5 Multi‑Stage Download: downloads stage1 and stage2 to `/tmp`, then deletes them. Uses external `MOCK_WEBHOOK` when set; otherwise local mock server endpoints.
-- 6 Worm Propagation: simulates `npm publish --dry-run` across 5 packages using `NPM_TOKEN` from the fake token.
-- 7 Cloud Metadata Probe: probes AWS/GCP/Azure metadata endpoints with short timeouts.
-- 8 Repo Weaponization: creates a repo and commits a `data.json` that includes fake tokens and env details.
-- 9 Bundle Worm Chain: repacks a tarball with `bundle.js` and spawns `/tmp/processor.sh` plus `/tmp/migrate-repos.sh` for defenders to track.
+### Scenarios at a glance (Available on both platforms!)
+- 1 **Malicious Postinstall**: triggers `postinstall` that POSTs to `MOCK_WEBHOOK`. Also tries curl/wget/yarn variations.
+- 2 **TruffleHog Scan**: downloads real TruffleHog binary from GitHub releases (mimics Shai-Hulud); scans fake secrets and posts structured payload with base64-encoded results.
+- 3 **Workflow Injection**: drops `.github/workflows/shai-hulud-workflow.yml` during an npm run; workflow posts to `MOCK_WEBHOOK`.
+- 4 **Package Patching**: appends a small payload into `node_modules/left-pad/index.js` during install and attempts a POST to the local server.
+- 5 **Multi‑Stage Download**: downloads stage1 and stage2 to `/tmp`, then deletes them. Uses external `MOCK_WEBHOOK` when set; otherwise local mock server endpoints.
+- 6 **Worm Propagation**: simulates `npm publish --dry-run` across 5 packages using `NPM_TOKEN` from the fake token.
+- 7 **Cloud Metadata Probe**: probes AWS/GCP/Azure metadata endpoints with short timeouts.
+- 8 **Repo Weaponization**: creates a repo and commits a `data.json` that includes fake tokens and env details.
+- 9 **Bundle Worm Chain**: repacks a tarball with `bundle.js` and spawns `/tmp/processor.sh` (or `.ps1` on Windows) plus `/tmp/migrate-repos.sh` for defenders to track.
+
+**💡 All 9 scenarios work on both Linux/macOS and Windows!**
 
 #### Visual overview
 
@@ -144,3 +160,9 @@ flowchart TD
 ### Safety
 - All secrets used are fake and for testing only.
 - If you set a live `MOCK_WEBHOOK`, requests will be sent to that URL. Use a URL you control.
+
+### Platform-Specific Documentation
+- 🪟 **Windows (PowerShell)**: [Windows README →](windows/README.md)
+- 🐧 **Linux/macOS (Bash)**: See above instructions
+
+Both versions implement the same 9 attack scenarios with platform-native tooling!
