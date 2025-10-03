@@ -1,0 +1,10 @@
+{
+  "name": "ntl-demo-preinstall",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Demo package that triggers npm preinstall hook",
+  "scripts": {
+    "preinstall": "bash scripts/preinstall.sh"
+  }
+}
+

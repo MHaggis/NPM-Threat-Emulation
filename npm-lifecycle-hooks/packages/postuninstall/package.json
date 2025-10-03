@@ -1,0 +1,10 @@
+{
+  "name": "ntl-demo-postuninstall",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Demo package that triggers npm postuninstall hook",
+  "scripts": {
+    "postuninstall": "bash scripts/postuninstall.sh"
+  }
+}
+

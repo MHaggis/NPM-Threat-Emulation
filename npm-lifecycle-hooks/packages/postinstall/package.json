@@ -1,0 +1,10 @@
+{
+  "name": "ntl-demo-postinstall",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Demo package that triggers npm postinstall hook",
+  "scripts": {
+    "postinstall": "bash scripts/postinstall.sh"
+  }
+}
+

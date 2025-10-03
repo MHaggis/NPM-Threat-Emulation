@@ -31,8 +31,9 @@ class SimpleHandler(BaseHTTPRequestHandler):
         # Store payloads in tmp directory for debugging
         tmp_dir = os.path.join(os.path.dirname(__file__), "tmp")
         os.makedirs(tmp_dir, exist_ok=True)
+        # Use microsecond precision to avoid filename collisions within the same second
         fname = os.path.join(
-            tmp_dir, f"payload_{datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}.bin"
+            tmp_dir, f"payload_{datetime.utcnow().strftime('%Y%m%dT%H%M%S%fZ')}.bin"
         )
         try:
             with open(fname, "wb") as f:

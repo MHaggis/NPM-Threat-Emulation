@@ -106,6 +106,37 @@ curl -s -o /dev/null -w "%{http_code}\n" -X POST "$MOCK_WEBHOOK" -d test=1
     ```
 - Payloads received by the local server are saved under `tmp/payload_*.bin` for verification.
 
+#### Viewing captured payloads
+
+Pretty-print each payload (skips non-JSON and shows a short preview when needed):
+
+```bash
+for f in tmp/payload_*.bin; do
+  echo "--- $f ---"
+  python3 - "$f" <<'PY'
+import sys, json
+p=sys.argv[1]; d=open(p,'rb').read()
+try:
+  j=json.loads(d.decode('utf-8', errors='ignore'))
+  print(json.dumps(j, indent=2))
+except Exception:
+  print(f"[non-json] {len(d)} bytes; first 64 bytes:"); print(d[:64])
+PY
+done
+```
+
+Summarize phases observed:
+
+```bash
+for f in tmp/payload_*.bin; do
+  python3 - "$f" <<'PY' 2>/dev/null || true
+import sys, json
+d=open(sys.argv[1],'rb').read()
+print(json.loads(d.decode('utf-8',errors='ignore')).get('phase'))
+PY
+done | sed '/^$/d' | sort | uniq -c
+```
+
 ### Scenarios at a glance (Available on both platforms!)
 - 1 **Malicious Postinstall**: triggers `postinstall` that POSTs to `MOCK_WEBHOOK`. Also tries curl/wget/yarn variations.
 - 2 **TruffleHog Scan**: downloads real TruffleHog binary from GitHub releases (mimics Shai-Hulud); scans fake secrets and posts structured payload with base64-encoded results.

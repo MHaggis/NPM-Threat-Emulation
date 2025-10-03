@@ -1,0 +1,1 @@
+{"name":"ntl-hooks-test","version":"1.0.0","private":true,"dependencies":{"ntl-demo-install":"file:../packages/install","ntl-demo-postinstall":"file:../packages/postinstall","ntl-demo-preinstall":"file:../packages/preinstall"}}
